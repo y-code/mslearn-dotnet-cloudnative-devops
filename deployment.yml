@@ -46,6 +46,17 @@ spec:
       protocol: TCP # The protocol the SERVICE will listen to
       targetPort: 8080 # Port to forward to in the POD
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: productvolume
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,7 +73,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-        - image: acseshop.azurecr.io/productservice:v1
+        - image: acseshop.azurecr.io/productservice:0b132e8bf6d35ba6207f06278bb4e4a2436346b5
           name: productservice
           resources:
             requests:
@@ -79,7 +90,8 @@ spec:
               name: http
       volumes:
         - name: product-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: productvolume
 ---
 apiVersion: v1
 kind: Service
