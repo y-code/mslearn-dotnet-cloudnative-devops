@@ -23,6 +23,13 @@ spec:
             limits:
               cpu: 250m
               memory: 256Mi
+          volumeMounts:
+            - name: product-data
+              mountPath: /app/data/
           ports:
             - containerPort: 8080
               name: http
+      volumes:
+        - name: product-data
+          persistentVolumeClaim:
+            claimName: productvolume
