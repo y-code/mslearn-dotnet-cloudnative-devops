@@ -15,3 +15,5 @@ services:
     image: products:latest
     ports: 
       - "32001:8080"
+    volumes:
+      - ./:/app/data/
